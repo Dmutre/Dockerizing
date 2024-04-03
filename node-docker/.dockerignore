@@ -1,0 +1,7 @@
+dist/*
+node_modules/*
+.gitignore
+.eslintrc.js
+.prettierrc
+README.md
+nest-cli.json
