@@ -1,4 +1,4 @@
-FROM node:20-alpine3.18
+FROM node:20-alpine3.18 as builder
 
 WORKDIR /app
 
@@ -12,10 +12,18 @@ RUN pnpm install
 
 COPY . .
 
-COPY .env ./
-
 RUN pnpm run build
+
+FROM node:20-alpine3.18
+
+WORKDIR /app
+
+COPY --from=builder /app/dist /app/dist
+
+COPY --from=builder /app/node_modules /app/node_modules
+
+COPY .env /app
 
 EXPOSE 5000
 
-CMD ["pnpm", "run", "start:prod"]
+CMD ["dist/main"]
